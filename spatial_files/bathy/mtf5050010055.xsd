@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://www.cadcorp.com/ns" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns="http://www.cadcorp.com/ns" xmlns:gml="http://www.opengis.net/gml" elementFormDefault="qualified" version="0.1">
+<xsd:import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/2.1.2/feature.xsd"/>
+<xsd:complexType name="TempCollection_Type"><xsd:complexContent><xsd:extension base="gml:AbstractFeatureCollectionType" /></xsd:complexContent></xsd:complexType>
+<xsd:element name="TempCollection" type="ns:TempCollection_Type" substitutionGroup="gml:_FeatureCollection" />
+<xsd:complexType name="Temp_Type"><xsd:complexContent><xsd:extension base="gml:AbstractFeatureType"><xsd:sequence>
+<xsd:element name="GML_Geometry" type="gml:GeometryPropertyType" nillable="false" minOccurs="0" maxOccurs="1" />
+<xsd:element name="COMMENTS" type="xsd:string" nillable="false" minOccurs="0" maxOccurs="1" />
+<xsd:element name="METADATA_ID" type="xsd:int" nillable="false" minOccurs="0" maxOccurs="1" />
+<xsd:element name="NAME" type="xsd:string" nillable="false" minOccurs="0" maxOccurs="1" />
+<xsd:element name="SCALE" type="xsd:int" nillable="false" minOccurs="0" maxOccurs="1" />
+<xsd:element name="UPDATED" type="xsd:string" nillable="false" minOccurs="0" maxOccurs="1" />
+<xsd:element name="DESCRIPTN" type="xsd:string" nillable="false" minOccurs="0" maxOccurs="1" />
+<xsd:element name="NATIONALTY" type="xsd:string" nillable="false" minOccurs="0" maxOccurs="1" />
+<xsd:element name="SOURCE_DAT" type="xsd:string" nillable="false" minOccurs="0" maxOccurs="1" />
+<xsd:element name="SOURCE_IND" type="xsd:string" nillable="false" minOccurs="0" maxOccurs="1" />
+<xsd:element name="TILE_ID" type="xsd:string" nillable="false" minOccurs="0" maxOccurs="1" />
+</xsd:sequence></xsd:extension></xsd:complexContent></xsd:complexType>
+<xsd:element name="Temp" type="ns:Temp_Type" substitutionGroup="gml:_Feature" />
+</xsd:schema>
