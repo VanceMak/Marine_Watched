@@ -4,7 +4,7 @@
 library(pacman)
 pacman:: p_load(here, dplyr, tidyverse, sf, ggplot2, gganimate, gifski, terra, tidyterra)
 
-#read data <===== change acccording to visualisation 
+#read data <===== change according to visualization 
   #GPS TRACK OF BOAT TRIP
 trip <- read.csv(here::here("raw_data","2023_09_22","waypoints.csv"),row.names=NULL) %>%
   st_as_sf(coords = c("X", "Y"), crs=4326, remove = FALSE) %>%
@@ -43,14 +43,22 @@ plot <- ggplot() +
   geom_sf(data=falbay, colour = "#cedce3", fill = "grey75",lwd=0.5) +  
   geom_sf(data=falmouth, colour = "grey60", fill = "grey60") + 
   geom_path(data=trip, linewidth = 0.75, aes(x = X, y = Y, colour = order)) + 
-  scale_colour_gradient2(high = "darkgreen", mid = "white", low = "darkgoldenrod1", 
-                         midpoint = max(trip$order)/2) +
+  scale_colour_gradient2(high = "darkgreen", mid = "white", low = "magenta4", 
+                         midpoint = max(trip$order)/2,
+                         breaks = c(0, 120, 130, 250)) +
   ggnewscale::new_scale_colour() +  
-  geom_point(data=sightings, aes(x = Longitude, y = Latitude, colour = species), 
-             size = 3,alpha = 0.8) +
-  ggnewscale::new_scale_colour() + 
+  geom_point(data=sightings, alpha = 0.8, aes(x = Longitude, y = Latitude, 
+                        colour = species, shape= species, size= species)) +
+  scale_colour_manual(values = c("Bird" = "#E68613", "Cetacean" = "red", 
+                      "Seal" = "sienna", "Fish" = "aquamarine")) +
+  scale_shape_manual(values = c("Bird" = 20, "Cetacean" = 18, 
+                                "Seal" = 15, "Fish" = 17)) +
+  scale_size_manual(values = c("Bird" = 3, "Cetacean" = 5, 
+                               "Seal" = 4, "Fish" = 4))+
   coord_sf(xlim = c(-5.15,-4.75), ylim = c(50.01, 50.2)) +
   scale_y_continuous(breaks = seq(50.07, 50.19, by = 0.1)) +
   NULL
 
 plot
+ 
+
