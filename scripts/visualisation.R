@@ -7,25 +7,25 @@ pacman:: p_load(here, dplyr, tidyverse, sf, ggplot2, gganimate, gifski, terra, t
 
 #read data <===== change acccording to visualisation 
   #GPS TRACK OF BOAT TRIP
-trip <- read.csv("raw_data/2023_09_22/waypoints.csv",row.names=NULL) %>%
+trip <- read.csv(here::here("raw_data","2023_09_22","waypoints.csv"),row.names=NULL) %>%
   st_as_sf(coords = c("X", "Y"), crs=4326, remove = FALSE) %>%
   summarize(do_union = FALSE) %>%
   st_cast("LINESTRING") 
 
   #GPS POINTS OF SIGHTINGS
-sightings <- read.csv("raw_data/2023_09_22/points.csv",row.names=NULL) %>%
+sightings <- read.csv(here::here("raw_data","2023_09_22","points.csv"),row.names=NULL) %>%
   filter(!is.na(Latitude)) %>% 
   filter(!is.na(Longitude)) %>%
   st_as_sf(coords = c("Latitude", "Longitude"), crs=4326, remove = FALSE)
 
 
 #read spatial files <=== do not change
-cornwall <- st_read("spatial_files/cornwall/cornwall.shp")
-falbay <- st_read("spatial_files/fal bay poly/falmouth_bay.shp")
-falmouth <- st_read("spatial_files/fal poly/57583-polygon.shp")
+cornwall <- st_read(here::here("spatial_files","cornwall","cornwall.shp"))
+falbay <- st_read(here::here("spatial_files","fal bay poly","falmouth_bay.shp"))
+falmouth <- st_read(here::here("spatial_files","fal poly","57583-polygon.shp"))
 
-bathy = rast("spatial_files/bathy/mtf5050010050.asc")
-bathy2 = rast("spatial_files/bathy/mtf5050010055.asc")
+bathy = rast(here::here("spatial_files","bathy","mtf5050010050.asc"))
+bathy2 = rast(here::here("spatial_files","bathy","mtf5050010055.asc"))
 
 
 #plot <=== do not change
@@ -48,4 +48,3 @@ plot <- ggplot() +
   NULL
 
 plot
-
