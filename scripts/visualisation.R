@@ -28,6 +28,8 @@ falmouth <- st_read(here::here("spatial_files","fal poly","57583-polygon.shp"))
 bathy = rast(here::here("spatial_files","bathy","mtf5050010050.asc"))
 bathy2 = rast(here::here("spatial_files","bathy","mtf5050010055.asc"))
 
+uk <- st_read(here::here("spatial_files","uk poly","LAD_MAY_2022_UK_BFE_V3.shp"))
+
 
 #plot <=== do not change
 plot <- ggplot() + 
@@ -45,20 +47,22 @@ plot <- ggplot() +
   geom_path(data=trip, linewidth = 0.75, aes(x = X, y = Y, colour = order)) + 
   scale_colour_gradient2(high = "darkgreen", mid = "white", low = "magenta4", 
                          midpoint = max(trip$order)/2,
-                         breaks = c(0, 120, 130, 250)) +
+                         breaks = c(0, 124, 126, 250)) +
   ggnewscale::new_scale_colour() +  
   geom_point(data=sightings, alpha = 0.8, aes(x = Longitude, y = Latitude, 
                         colour = species, shape= species, size= species)) +
   scale_colour_manual(values = c("Bird" = "#E68613", "Cetacean" = "red", 
                       "Seal" = "sienna", "Fish" = "aquamarine")) +
-  scale_shape_manual(values = c("Bird" = 20, "Cetacean" = 18, 
-                                "Seal" = 15, "Fish" = 17)) +
+  scale_shape_manual(values = c("Bird" = "\u25C4", "Cetacean" = "\u25B2", 
+                                "Seal" = "\u25BC", "Fish" = "\u25BA")) +
   scale_size_manual(values = c("Bird" = 3, "Cetacean" = 5, 
                                "Seal" = 4, "Fish" = 4))+
-  coord_sf(xlim = c(-5.15,-4.75), ylim = c(50.01, 50.2)) +
+  coord_sf(xlim = c(-5.15,-4.75), ylim = c(50.01, 50.2), expand = FALSE) +
   scale_y_continuous(breaks = seq(50.07, 50.19, by = 0.1)) +
   NULL
 
 plot
- 
+
+#inset map  
+#plot + coord_sf(xlim = c(-6, 3), ylim = c(48, 60), expand = FALSE)
 
