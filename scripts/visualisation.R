@@ -2,7 +2,7 @@
 
 #install.packages("pacman")
 library(pacman)
-pacman:: p_load(here, dplyr, tidyverse, sf, ggplot2, gganimate, gifski, terra, tidyterra,ggnewscale)
+pacman:: p_load(here, dplyr, tidyverse, sf, ggplot2, gganimate, gifski, terra, tidyterra, ggnewscale, cowplot)
 
 #read data <===== change according to visualization 
   #GPS TRACK OF BOAT TRIP
@@ -24,16 +24,17 @@ sightings <- read.csv(here::here("raw_data","2023_09_22","points.csv"),row.names
 cornwall <- st_read(here::here("spatial_files","cornwall","cornwall.shp"))
 falbay <- st_read(here::here("spatial_files","fal bay poly","falmouth_bay.shp"))
 falmouth <- st_read(here::here("spatial_files","fal poly","57583-polygon.shp"))
+uk <- st_read(here::here("spatial_files","uk poly","LAD_MAY_2022_UK_BFE_V3.shp"))
 
 bathy = rast(here::here("spatial_files","bathy","mtf5050010050.asc"))
 bathy2 = rast(here::here("spatial_files","bathy","mtf5050010055.asc"))
 
 
 #plot <=== do not change
-plot <- ggplot() + 
+trip.map <- ggplot() + 
   theme(panel.background = element_blank(), panel.ontop = TRUE,
         panel.grid.major = element_line(linetype = "solid", 
-                                        colour = "grey30", linewidth =0.075),
+                                        colour = "#4d4d4d50", linewidth =0.075),
         panel.border = element_rect(colour="transparent", fill = "transparent"),
         legend.position = "none") +
   geom_spatraster(data=bathy) +
@@ -59,11 +60,35 @@ plot <- ggplot() +
   scale_y_continuous(breaks = seq(50.07, 50.19, by = 0.1)) +
   NULL
 
-plot
+trip.map
 
-#inset map  
-plot + coord_sf(xlim = c(-6, 3), ylim = c(48, 60), expand = FALSE)
+#inset maps
+inset.base <- ggplot() + 
+  theme(panel.background = element_blank(), 
+        plot.background = element_blank(),
+        panel.grid.major = element_blank(),
+        #panel.border = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text.y = element_blank(),
+        axis.text.x = element_blank()) +
+  geom_sf(data=uk, colour = "grey75", fill = "grey75") + 
+  geom_sf(data=cornwall, colour = "grey60", fill = "grey60") +
+  geom_sf(data=falmouth, colour = "red", fill = "red") +
+  geom_rect(xmin = 131950.40, xmax = 206071.14, 
+            ymin = 11179.37, ymax = 113556.30,
+            fill = NA, colour = "black", linewidth = 0.6)+
+  NULL
 
+inset.base
 
-uk <- st_read(here::here("spatial_files","uk poly","LAD_MAY_2022_UK_BFE_V3.shp"))
+inset.map <- ggdraw(inset.base) + 
+  draw_plot({inset.base + coord_sf(xlim = c(131950.40, 206071.14), 
+                                 ylim = c(11179.37, 113556.30 ), expand = FALSE)},
+            x = 0, y = 0,
+            width = 0.3, height = 0.3)
+
+inset.map
+
+inset.base + coord_sf(xlim = c(131950.40, 206071.14), ylim = c(11179.37, 113556.30 ), expand = FALSE)
+
 
