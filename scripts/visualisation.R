@@ -82,6 +82,10 @@ inset.base <- ggplot() +
 inset.base
 
 inset.map <- ggdraw(inset.base) + 
+  draw_plot({inset.base + coord_sf(xlim = c(131950.40, 206071.14),
+                                   ylim = c(11179.37, 113556.30 ),
+                                   expand = FALSE)})
+  
   draw_plot({inset.base + coord_sf(xlim = c(131950.40, 206071.14), 
                                  ylim = c(11179.37, 113556.30 ), expand = FALSE)},
             x = 0, y = 0,
