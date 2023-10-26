@@ -2,7 +2,7 @@
 
 #install.packages("pacman")
 library(pacman)
-pacman:: p_load(here, dplyr, tidyverse, sf, ggplot2, gganimate, gifski, terra, tidyterra)
+pacman:: p_load(here, dplyr, tidyverse, sf, ggplot2, gganimate, gifski, terra, tidyterra,ggnewscale)
 
 #read data <===== change according to visualization 
   #GPS TRACK OF BOAT TRIP
@@ -24,7 +24,6 @@ sightings <- read.csv(here::here("raw_data","2023_09_22","points.csv"),row.names
 cornwall <- st_read(here::here("spatial_files","cornwall","cornwall.shp"))
 falbay <- st_read(here::here("spatial_files","fal bay poly","falmouth_bay.shp"))
 falmouth <- st_read(here::here("spatial_files","fal poly","57583-polygon.shp"))
-uk <- st_read(here::here("spatial_files","uk poly","LAD_MAY_2022_UK_BFE_V3.shp"))
 
 bathy = rast(here::here("spatial_files","bathy","mtf5050010050.asc"))
 bathy2 = rast(here::here("spatial_files","bathy","mtf5050010055.asc"))
@@ -43,7 +42,6 @@ plot <- ggplot() +
                       breaks = c(0, -10, -50, -60)) +
   geom_sf(data=falbay, colour = "#cedce3", fill = "grey75",lwd=0.5) +  
   geom_sf(data=falmouth, colour = "grey60", fill = "grey60") + 
-  geom_sf(data=uk, colour = "grey60", fill = "grey60") + 
   geom_path(data=trip, linewidth = 0.75, aes(x = X, y = Y, colour = order)) + 
   scale_colour_gradient2(high = "darkgreen", mid = "white", low = "magenta4", 
                          midpoint = max(trip$order)/2,
@@ -65,4 +63,7 @@ plot
 
 #inset map  
 plot + coord_sf(xlim = c(-6, 3), ylim = c(48, 60), expand = FALSE)
+
+
+uk <- st_read(here::here("spatial_files","uk poly","LAD_MAY_2022_UK_BFE_V3.shp"))
 
