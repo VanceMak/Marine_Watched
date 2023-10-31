@@ -2,7 +2,8 @@
 
 #install.packages("pacman")
 library(pacman)
-pacman:: p_load(here, dplyr, tidyverse, sf, ggplot2, gganimate, gifski, terra, tidyterra, ggnewscale, cowplot)
+pacman:: p_load(here, dplyr, tidyverse, sf, ggplot2, gganimate, gifski, 
+                terra, tidyterra, ggnewscale, cowplot, extrafont, elementalistm, ggtext)
 
 #read data <===== change according to visualization 
   #GPS TRACK OF BOAT TRIP
@@ -32,17 +33,12 @@ bathy2 = rast(here::here("spatial_files","bathy","mtf5050010055.asc"))
 
 #plot <=== do not change
 trip.map <- ggplot() + 
-  theme(panel.background = element_blank(), panel.ontop = TRUE,
-        panel.grid.major = element_line(linetype = "solid", 
-                                        colour = "#4d4d4d50", linewidth =0.075),
-        panel.border = element_rect(colour="transparent", fill = "transparent"),
-        legend.position = "none") +
   geom_spatraster(data=bathy) +
   geom_spatraster(data=bathy2) +
   scale_fill_gradient(high = "#cedce3", low = "#0073ad",
-                      breaks = c(0, -10, -50, -60)) +
+                      breaks = c(0, -10, -50, -60), na.value = "#cedce3", guide = "none") +
   geom_sf(data=falbay, colour = "#cedce3", fill = "grey75",lwd=0.5) +  
-  geom_sf(data=falmouth, colour = "grey60", fill = "grey60") + 
+  geom_sf(data=falmouth, colour = "grey60", fill = "grey60", lwd = 0.1) + 
   geom_path(data=trip, linewidth = 0.75, aes(x = X, y = Y, colour = order)) + 
   scale_colour_gradient2(high = "darkgreen", mid = "white", low = "magenta4", 
                          midpoint = max(trip$order)/2,
@@ -58,9 +54,33 @@ trip.map <- ggplot() +
                                "Seal" = 4, "Fish" = 4))+
   coord_sf(xlim = c(-5.15,-4.75), ylim = c(50.01, 50.2), expand = FALSE) +
   scale_y_continuous(breaks = seq(50.07, 50.19, by = 0.1)) +
+  theme(panel.background = element_blank(), panel.ontop = TRUE,
+        panel.grid.major = element_line(linetype = "solid", colour = "#4d4d4d26", linewidth =0.075),
+        panel.border = element_rect(colour="transparent", fill = "transparent"),
+        legend.direction = "horizontal", 
+        legend.position = c(0.78,0.2),
+        legend.margin = margin(t = 0, unit = "cm"),
+        legend.title = element_blank(), 
+        legend.text = element_blank(),
+        legend.key.width = unit(1.2, "cm"),
+        #legend.key = elementalist::element_rect_round(radius = unit(0.5, "snpc")),
+        legend.key.height = unit(0.5, "cm"),
+        legend.background = element_rect(colour="transparent", fill = "transparent"),
+        legend.key = element_rect(colour="transparent", fill = "transparent"),
+        legend.key.size = unit(10, 'cm'),
+        axis.title = element_blank()) +
+  annotate("rect", xmin = -4.902, xmax = -4.766, ymin = 50.017, ymax = 50.03, alpha = 0.3, fill = "white") +
+  annotate("richtext", x = -4.9, y = 50.027, #family = "Karla", 
+           label = "**Coordinate Reference System:** ESPG7030",
+           color = "grey30", size = 3, hjust = 0, fill = NA, label.color = NA) +
+  annotate("richtext", x = -4.899, y = 50.021, #family = "Karla", 
+           label = "**Unit:** Metre, **Datum:** WGS84, **Code by:** @VanceMak" ,
+           color = "grey30", size = 2.25, hjust = 0, fill = NA, label.color = NA) +
   NULL
 
 trip.map
+
+
 
 #inset maps
 inset.base <- ggplot() + 
@@ -84,15 +104,12 @@ inset.base
 inset.map <- ggdraw(inset.base) + 
   draw_plot({inset.base + coord_sf(xlim = c(131950.40, 206071.14),
                                    ylim = c(11179.37, 113556.30 ),
-                                   expand = FALSE)})
-  
-  draw_plot({inset.base + coord_sf(xlim = c(131950.40, 206071.14), 
-                                 ylim = c(11179.37, 113556.30 ), expand = FALSE)},
-            x = 0, y = 0,
+                                   expand = FALSE)},
+            x = 0.2, y = 0,
             width = 0.3, height = 0.3)
 
 inset.map
 
-inset.base + coord_sf(xlim = c(131950.40, 206071.14), ylim = c(11179.37, 113556.30 ), expand = FALSE)
+
 
 
