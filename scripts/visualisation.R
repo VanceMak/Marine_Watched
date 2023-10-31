@@ -2,7 +2,6 @@
 #install.packages("pacman")
 library(pacman)
 pacman:: p_load(here, dplyr, tidyverse, sf, ggplot2, gganimate, gifski, 
-<<<<<<< HEAD
                 terra, tidyterra, ggnewscale, cowplot, extrafont, 
                 elementalistm, ggtext, rstudioapi) #elementalistm may fail
 
@@ -21,9 +20,7 @@ run_lines <- function(x) {
 #====================================== CHANGE THIS ========================================
 #=========================================================================================
                 #=======================================================
-=======
-                terra, tidyterra, ggnewscale, cowplot, extrafont, elementalistm, ggtext)
->>>>>>> f87df07fc82a5587395c374d6ab29e3ffc1ad6d0
+
 
   #GPS TRACK OF BOAT TRIP
 trip <- read.csv(here::here("raw_data","2023_09_22","waypoints.csv"), #change this line
@@ -87,7 +84,8 @@ inset.cornwall <- ggplot() +
         axis.text.y = element_blank(),
         axis.text.x = element_blank()) +
   geom_sf(data=cornwall, colour = "grey60", fill = "grey60") +
-  geom_sf(data=falmouth, colour = "red", fill = "red") +
+  geom_sf(data=falmouth, colour = "red", fill = "red") + 
+  geom_path(data=trip, linewidth = 0.75, aes(x = X, y = Y, colour = "red")) + 
   NULL
 
 inset.map <- ggdraw(inset.base) + 
@@ -126,14 +124,10 @@ trip.map <- ggplot() +
   coord_sf(xlim = c(-5.15,-4.75), ylim = c(50.01, 50.203), expand = FALSE) +
   scale_y_continuous(breaks = seq(50.07, 50.19, by = 0.1)) +
   theme(panel.background = element_blank(), panel.ontop = TRUE,
-        panel.grid.major = element_line(linetype = "solid", colour = "#4d4d4d26", linewidth =0.075),
+        panel.grid.major = element_line(linetype = "solid", 
+                                        colour = "#4d4d4d26", linewidth =0.075),
         panel.border = element_rect(colour="transparent", fill = "transparent"),
         legend.direction = "horizontal", 
-<<<<<<< HEAD
-        legend.position = c(0.785,0.2),
-=======
-        legend.position = c(0.78,0.2),
->>>>>>> f87df07fc82a5587395c374d6ab29e3ffc1ad6d0
         legend.margin = margin(t = 0, unit = "cm"),
         legend.title = element_blank(), 
         legend.text = element_blank(),
@@ -144,7 +138,6 @@ trip.map <- ggplot() +
         legend.key = element_rect(colour="transparent", fill = "transparent"),
         legend.key.size = unit(10, 'cm'),
         axis.title = element_blank()) +
-<<<<<<< HEAD
   annotate("rect", xmin = -4.875, xmax = -4.755, ymin = 50.107, ymax = 50.2, 
            alpha = 0.5, colour = "grey50", fill = "#0073ad01") +
   annotate("richtext", x = -4.9, y = 50.027, #family = "Karla", 
@@ -161,50 +154,6 @@ final.map <- ggdraw(trip.map) +
   draw_plot(inset.map, x = 0.61, y = 0.50, width = 0.5, height = 0.5)
 
 #http://www.sthda.com/english/wiki/ggplot2-texts-add-text-annotations-to-a-graph-in-r-software
-=======
-  annotate("rect", xmin = -4.902, xmax = -4.766, ymin = 50.017, ymax = 50.03, alpha = 0.3, fill = "white") +
-  annotate("richtext", x = -4.9, y = 50.027, #family = "Karla", 
-           label = "**Coordinate Reference System:** ESPG7030",
-           color = "grey30", size = 3, hjust = 0, fill = NA, label.color = NA) +
-  annotate("richtext", x = -4.899, y = 50.021, #family = "Karla", 
-           label = "**Unit:** Metre, **Datum:** WGS84, **Code by:** @VanceMak" ,
-           color = "grey30", size = 2.25, hjust = 0, fill = NA, label.color = NA) +
-  NULL
-
-trip.map
-
-
-
-#inset maps
-inset.base <- ggplot() + 
-  theme(panel.background = element_blank(), 
-        plot.background = element_blank(),
-        panel.grid.major = element_blank(),
-        #panel.border = element_blank(),
-        axis.ticks = element_blank(),
-        axis.text.y = element_blank(),
-        axis.text.x = element_blank()) +
-  geom_sf(data=uk, colour = "grey75", fill = "grey75") + 
-  geom_sf(data=cornwall, colour = "grey60", fill = "grey60") +
-  geom_sf(data=falmouth, colour = "red", fill = "red") +
-  geom_rect(xmin = 131950.40, xmax = 206071.14, 
-            ymin = 11179.37, ymax = 113556.30,
-            fill = NA, colour = "black", linewidth = 0.6)+
-  NULL
-
-inset.base
-
-inset.map <- ggdraw(inset.base) + 
-  draw_plot({inset.base + coord_sf(xlim = c(131950.40, 206071.14),
-                                   ylim = c(11179.37, 113556.30 ),
-                                   expand = FALSE)},
-            x = 0.2, y = 0,
-            width = 0.3, height = 0.3)
-
-inset.map
-
-
->>>>>>> f87df07fc82a5587395c374d6ab29e3ffc1ad6d0
 
                     #=======================================================
 #=========================================================================================
