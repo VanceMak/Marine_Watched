@@ -44,7 +44,7 @@ sightings <- read.csv(here::here("raw_data","2023_09_22","points.csv"), #change 
 #=========================================================================================
                   #=======================================================
 
-run_lines(58:156) 
+run_lines(55:156) 
 
                 #=======================================================
 #=========================================================================================
@@ -84,9 +84,10 @@ inset.cornwall <- ggplot() +
         axis.text.y = element_blank(),
         axis.text.x = element_blank()) +
   geom_sf(data=cornwall, colour = "grey60", fill = "grey60") +
-  geom_sf(data=falmouth, colour = "red", fill = "red") + 
-  geom_path(data=trip, linewidth = 0.75, aes(x = X, y = Y, colour = "red")) + 
+  geom_sf(data=falmouth, colour = "red", fill = "red") +
+  #geom_path(data=trip, colour = "red", aes(x=X, y=Y)) +
   NULL
+?geom_path
 
 inset.map <- ggdraw(inset.base) + 
   draw_plot({inset.cornwall +  coord_sf(xlim = c(-5.75, -4.7), 
@@ -124,10 +125,10 @@ trip.map <- ggplot() +
   coord_sf(xlim = c(-5.15,-4.75), ylim = c(50.01, 50.203), expand = FALSE) +
   scale_y_continuous(breaks = seq(50.07, 50.19, by = 0.1)) +
   theme(panel.background = element_blank(), panel.ontop = TRUE,
-        panel.grid.major = element_line(linetype = "solid", 
-                                        colour = "#4d4d4d26", linewidth =0.075),
+        panel.grid.major = element_line(linetype = "solid", colour = "#4d4d4d26", linewidth =0.075),
         panel.border = element_rect(colour="transparent", fill = "transparent"),
         legend.direction = "horizontal", 
+        legend.position = c(0.785,0.2),
         legend.margin = margin(t = 0, unit = "cm"),
         legend.title = element_blank(), 
         legend.text = element_blank(),
@@ -162,4 +163,4 @@ final.map <- ggdraw(trip.map) +
                       #=======================================================
 
 final.map #final map, this is a really big render and may fail a few times
-trip.map #has everything except inset, should load better hopefully
+trip.map #has everything except inset, should load better hopefully 
